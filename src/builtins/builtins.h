@@ -1,8 +1,9 @@
-#include <unistd.h>
-#include <stdio.h>
-
 #ifndef BUILTINS_H
 #define BUILTINS_H
+
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef int (*pointer_function) (char**);
 
@@ -16,7 +17,7 @@ int sh_exit(char** args);
 
 extern const char* list_builtins[2];
 
-const int sh_nb_builtins;
+extern const int sh_nb_builtins;
 
 extern pointer_function builtins_func[2];
 

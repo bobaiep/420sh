@@ -31,8 +31,8 @@ int sh_cd(char** args){
         if (chdir(args[1]) != 0){
             perror("420sh");
         }
-  }
-  return 1;
+    }
+    return 1;
 }
 
 int sh_exit(char** args __attribute__((unused))){

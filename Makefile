@@ -2,13 +2,14 @@
 #Author : marius.andre
 
 CC=gcc
-CFLAGS= -Wall -Wextra -Werror -std=c99 -O3 -g
+CFLAGS= -Wall -Wextra -Werror -std=c99 -O3 -g 
+LDFLAGS= -rdynamic -fsanitize=address
 
-SRC= src/main.c src/builtins/builtins.c src/cmd/cmd.c src/exec/exec.c src/parser/parser.c
+SRC= main.c src/builtins/builtins.c src/cmd/cmd.c src/exec/exec.c src/parser/parser.c
 OBJ= $(SRC:.c=.o)
 DEP= $(SRC:.c=.d)
 
-all: main 
+all: main
 
 main: $(OBJ)
 

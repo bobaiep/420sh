@@ -43,7 +43,7 @@ int sh_execute(char **args){
 	return sh_launch(args);
 }
 
-void sh_loop(void){
+void main_loop(void){
 	char *line;
 	char **args;
 	int status;
