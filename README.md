@@ -11,13 +11,17 @@ make
 
 ## Author
 
-👤 **Marius ANDRE**
+👤 **Marius ANDRE (marius.andre)**
 
 * Github: [@bobafeet2000](https://github.com/bobafeet2000)
 
-## Show your support
+👤 **Adam ELZAIM (adam.elzaim)**
 
-Give a ⭐️ if this project helped you!
+* Github: [@AdamElzaim](https://github.com/AdamElzaim)
+
+👤 **Nicola BRANKOVIC (nicola.brankovic)**
+
+* Github: [@Smajser12](https://github.com/Smajser12)
 
 
 ***
