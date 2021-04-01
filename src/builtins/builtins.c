@@ -25,7 +25,9 @@ int sh_nb_builtins(void){
 
 int sh_cd(char** args){
     if (args[1] == NULL){
-        args[1] = getenv("HOME");
+        if (chdir(getenv("HOME")) != 0){
+            perror("420sh");
+        }
     }
     else{
         if (chdir(args[1]) != 0){
