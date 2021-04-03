@@ -43,13 +43,15 @@ int sh_execute(char **args){
 	return sh_launch(args);
 }
 
-void main_loop(void){
+void main_loop(){
 	char *line;
 	char **args;
 	int status;
-
+	shell_init();
+	current->pwd = getcwd(NULL,0);
+	current->oldpwd = current->pwd;
 	do {
-		printf("> ");
+		printf("%s > ",current->pwd);
 		line = sh_read_line();
 		args = sh_split_line(line);
 		status = sh_execute(args);
@@ -57,4 +59,5 @@ void main_loop(void){
 		free(line);
 		free(args);
 	} while (status);
+	shell_destroy();
 }

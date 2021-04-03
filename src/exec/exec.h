@@ -8,11 +8,12 @@
 #include <sys/types.h>
 #include "../builtins/builtins.h"
 #include "../parser/parser.h"
+#include "../cmd/shell.h"
 
 int sh_launch(char **args);
 
 int sh_execute(char **args);
 
-void main_loop(void);
+void main_loop();
 
 #endif

@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../cmd/shell.h"
 
 typedef int (*pointer_function) (char**);
 

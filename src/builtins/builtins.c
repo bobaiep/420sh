@@ -34,6 +34,8 @@ int sh_cd(char** args){
             perror("420sh");
         }
     }
+    current->oldpwd = current->pwd;
+    current->pwd = getcwd(NULL,0);
     return 1;
 }
 
