@@ -9,7 +9,7 @@ char* sh_read_line(void){
 			exit(EXIT_SUCCESS);  
 		} 
 		else{
-			perror("sh: getline\n");
+			perror("420sh: getline\n");
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -26,7 +26,7 @@ char** sh_split_line(char *line){
 	char *token, **tokens_backup;
 
 	if (!tokens) {
-		fprintf(stderr, "sh: allocation error\n");
+		fprintf(stderr, "420sh: allocation error\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -41,7 +41,7 @@ char** sh_split_line(char *line){
 			tokens = realloc(tokens, bufsize * sizeof(char*));
 			if (!tokens) {
 				free(tokens_backup);
-				fprintf(stderr, "sh: allocation error\n");
+				fprintf(stderr, "420sh: allocation error\n");
 				exit(EXIT_FAILURE);
 			}
 		}

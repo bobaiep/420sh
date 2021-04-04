@@ -48,7 +48,7 @@ void main_loop(){
 	char **args;
 	int status;
 	shell_init();
-	current->pwd = getcwd(NULL,0);
+	sh_pwd(NULL);
 	current->oldpwd = current->pwd;
 	do {
 		printf("%s > ",current->pwd);

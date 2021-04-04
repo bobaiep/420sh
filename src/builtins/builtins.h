@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
 #include "../cmd/shell.h"
 
 typedef int (*pointer_function) (char**);
@@ -16,10 +17,16 @@ int sh_cd(char** args);
 //Always returns 0, to terminate execution.
 int sh_exit(char** args);
 
-extern const char* list_builtins[2];
+int sh_pwd(char** args);
+
+int sh_echo(char** args);
+
+int sh_cat(char** args);
+
+extern const char* list_builtins[5];
 
 extern const int sh_nb_builtins;
 
-extern pointer_function builtins_func[2];
+extern pointer_function builtins_func[5];
 
 #endif
