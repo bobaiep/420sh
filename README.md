@@ -3,10 +3,26 @@
 
 > A C based shell with voice recognition
 
-## Install
+## Compiling
 
 ```sh
 make
+```
+
+## Run
+After compiling, run :
+
+```sh
+./main
+```
+To run the shell with voice recognition (not implemented yet): 
+
+First, add your private service account key from Google to src/voice_recognition and rename it to "420sh.json".
+
+Then run:
+
+```sh
+./main --voice
 ```
 
 ## Author
