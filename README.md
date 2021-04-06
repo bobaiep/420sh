@@ -4,6 +4,7 @@
 > A C based shell with voice recognition
 
 ## Compiling
+
 ** Requires [Libsprec](https://github.com/H2CO3/libsprec) for speech recognition.**
 
 ```sh
