@@ -30,15 +30,15 @@ Then run:
 
 ## Author
 
-👤 **Marius ANDRE (marius.andre)**
+👤 **Marius ANDRE (marius.andre)** *In Charge of the Shell*
 
 * Github: [@bobafeet2000](https://github.com/bobafeet2000)
 
-👤 **Adam ELZAIM (adam.elzaim)**
+👤 **Adam ELZAIM (adam.elzaim)** *In Charge of the Voice Recognition*
 
 * Github: [@AdamElzaim](https://github.com/AdamElzaim)
 
-👤 **Nicola BRANKOVIC (nicola.brankovic)**
+👤 **Nicola BRANKOVIC (nicola.brankovic)** *In Charge of the Web*
 
 * Github: [@Smajser12](https://github.com/Smajser12)
 
