@@ -34,11 +34,11 @@ Then run:
 
 * Github: [@bobafeet2000](https://github.com/bobafeet2000)
 
-👤 **Adam ELZAIM (adam.elzaim)** *In Charge of the Voice Recognition*
+👤 **Adam ELZAIM (adam.elzaim)** *In Charge of the Web*
 
 * Github: [@AdamElzaim](https://github.com/AdamElzaim)
 
-👤 **Nicola BRANKOVIC (nicola.brankovic)** *In Charge of the Web*
+👤 **Nicola BRANKOVIC (nicola.brankovic)** *In Charge of the Voice Recognition* 
 
 * Github: [@Smajser12](https://github.com/Smajser12)
 
