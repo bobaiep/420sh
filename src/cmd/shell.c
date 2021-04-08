@@ -11,6 +11,5 @@ void shell_init(void){
 }
 
 void shell_destroy(void){
-    free(current->pwd);
     free(current);
 }

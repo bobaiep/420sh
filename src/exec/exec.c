@@ -49,7 +49,7 @@ void main_loop(){
 	int status;
 	shell_init();
 	sh_pwd(NULL);
-	current->oldpwd = current->pwd;
+	strcpy(current->oldpwd,current->pwd);
 	do {
 		printf("%s > ",current->pwd);
 		line = sh_read_line();

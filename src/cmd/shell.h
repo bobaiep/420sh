@@ -6,8 +6,8 @@
 
 typedef struct shell{
     char* name;
-    char* oldpwd;
-    char* pwd;
+    char oldpwd[4096];
+    char pwd[4096];
 } shell;
 
 extern shell* current;

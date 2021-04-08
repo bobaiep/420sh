@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <string.h>
 #include "../cmd/shell.h"
 
 typedef int (*pointer_function) (char**);

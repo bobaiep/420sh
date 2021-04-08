@@ -48,6 +48,7 @@ int sh_cat(char** args){
                 t = write(STDOUT_FILENO,buf,byte_lu);
                 close(t);
             }
+            printf("\n");
         }
     }
     if (args[1]==NULL){
@@ -68,7 +69,7 @@ int sh_cd(char** args){
             perror("420sh");
         }
     }
-    current->oldpwd = current->pwd;
+    strcpy(current->oldpwd,current->pwd);
     sh_pwd(NULL);
     return 1;
 }
@@ -84,10 +85,11 @@ int sh_echo(char** args){
 }
 
 int sh_pwd(char** args __attribute__((unused))){
-    current->pwd = getcwd(NULL,0);
-    if (current->pwd == NULL){
+    char tmp[4096];
+    if (getcwd(tmp,sizeof(tmp)) == NULL){
         perror("420sh");
     }
+    strcpy(current->pwd,tmp);
     if (args != NULL)
         printf("%s\n",current->pwd);
 
