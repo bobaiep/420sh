@@ -7,8 +7,11 @@
 #include <fcntl.h>
 #include <string.h>
 #include "../cmd/shell.h"
+#include "../cmd/cmd.h"
 
 typedef int (*pointer_function) (char**);
+
+int sh_list_builtins(char** args);
 
 /*Change directory in the shell.
 args[0] is "cd", args[1] is the directory, 
@@ -24,10 +27,12 @@ int sh_echo(char** args);
 
 int sh_cat(char** args);
 
-extern const char* list_builtins[5];
+int sh_mkdir(char** args);
+
+extern const char* list_builtins[7];
 
 extern const int sh_nb_builtins;
 
-extern pointer_function builtins_func[5];
+extern pointer_function builtins_func[7];
 
 #endif

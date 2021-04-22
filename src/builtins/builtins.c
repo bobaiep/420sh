@@ -9,27 +9,41 @@ int sh_exit(char** args);
 
 //Création d'une liste de nos builtins:
 const char* list_builtins[] = {
-    "cd",
     "cat",
+    "cd",
     "echo",
-    "pwd",
-    "exit"
+    "exit",
+    "list-builtins",
+    "mkdir",
+    "pwd"
 };
 
 pointer_function builtins_func[] = {
-    &sh_cd,
     &sh_cat,
+    &sh_cd,
     &sh_echo,
-    &sh_pwd,
-    &sh_exit
+    &sh_exit,
+    &sh_list_builtins,
+    &sh_mkdir,
+    &sh_pwd
 };
 
 
-const int sh_nb_builtins = 5;
+const int sh_nb_builtins = 7;
 /*
 int sh_nb_builtins(void){
     return sizeof(list_builtins) / sizeof(char *);
 }*/
+
+int sh_list_builtins(char** args){
+    if(args){
+        printf("Here's a list of available builtins: \n");
+        for(int i = 0; i < sh_nb_builtins; i++){
+            printf("    %i - %s\n",i,list_builtins[i]);
+        }
+    }
+    return 1;
+}
 
 int sh_cat(char** args){
     int i;
@@ -98,4 +112,22 @@ int sh_pwd(char** args __attribute__((unused))){
 
 int sh_exit(char** args __attribute__((unused))){
     return 0;
+}
+
+int sh_mkdir(char** args){
+    if (args[1] == NULL){
+        fprintf(stderr, "mkdir: Missing Operand !\n");
+        return 1;
+    } 
+    else{
+        for (int i=1;*(args+i) != NULL; i++) {
+            if(file_exist(*(args+i))){
+                continue;
+            } 
+            else {
+                mkdir(*(args+i), S_IRUSR | S_IWUSR | S_IXUSR);
+            }
+        }
+    }
+    return 1;
 }

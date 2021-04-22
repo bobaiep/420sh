@@ -9,3 +9,9 @@ void print_main_help(void){
 
     return;
 }
+
+int file_exist(const char *filename){
+    struct stat buffer;
+    int exist = stat(filename,&buffer);
+    return (exist == 0) ? 1 : 0;
+}
