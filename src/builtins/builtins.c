@@ -1,11 +1,20 @@
+#define _POSIX_C_SOURCE 200809L
 #include "builtins.h"
 
 //Déclaration de nos builtins:
 int sh_cat(char** args);
 int sh_cd(char** args);
 int sh_echo(char** args);
-int sh_pwd(char** args);
 int sh_exit(char** args);
+int sh_list_builtins(char** args);
+int sh_ls(char** args);
+int sh_mkdir(char** args);
+int sh_pwd(char** args);
+
+//Les Couleurs :
+#define RESET_COLOR "\e[m"
+#define GREEN "\e[32m"
+#define BLUE "\e[36m" 
 
 //Création d'une liste de nos builtins:
 const char* list_builtins[] = {
@@ -14,6 +23,7 @@ const char* list_builtins[] = {
     "echo",
     "exit",
     "list-builtins",
+    "ls",
     "mkdir",
     "pwd"
 };
@@ -24,12 +34,13 @@ pointer_function builtins_func[] = {
     &sh_echo,
     &sh_exit,
     &sh_list_builtins,
+    &sh_ls,
     &sh_mkdir,
     &sh_pwd
 };
 
 
-const int sh_nb_builtins = 7;
+const int sh_nb_builtins = 8;
 /*
 int sh_nb_builtins(void){
     return sizeof(list_builtins) / sizeof(char *);
@@ -41,6 +52,99 @@ int sh_list_builtins(char** args){
         for(int i = 0; i < sh_nb_builtins; i++){
             printf("    %i - %s\n",i,list_builtins[i]);
         }
+    }
+    return 1;
+}
+
+int sh_ls(char** args){
+    DIR *dirp; 
+    struct dirent *dptr; 
+    char cwd[1024]; 
+    getcwd(cwd, sizeof(cwd));
+    struct stat s;
+    struct group *grp;
+    struct passwd *pwd;
+    char buffer[80];
+    int argc = 0;
+
+    for (size_t i = 1; *(args+i) != NULL; i++){
+        argc++;
+    }
+
+    if(argc<4){
+        if(args[1] == NULL){
+            dirp=opendir(cwd);
+        } else {
+            dirp=opendir(args[1]);
+        }
+
+        if (dirp==NULL) {
+            printf("No such file or directory\n");
+            return(1);
+        }
+
+        while((dptr=readdir(dirp))) {
+            stat(dptr->d_name,&s);
+
+            if(dptr->d_name[0] != '.'){ 
+                
+                if(S_ISBLK(s.st_mode))
+                    fprintf(stdout, "b" );
+                else if(S_ISCHR(s.st_mode))
+                    fprintf(stdout, "c" );
+                else if(S_ISDIR(s.st_mode))
+                    fprintf(stdout, "d" );
+                else if(S_ISFIFO(s.st_mode))
+                    fprintf(stdout, "p" );
+                else if(S_ISLNK(s.st_mode))
+                    fprintf(stdout, "l" );
+                else if(S_ISREG(s.st_mode))
+                    fprintf(stdout, "-" );
+                else if(S_ISSOCK(s.st_mode))
+                    fprintf(stdout, "s" );
+
+                fprintf(stdout, s.st_mode & S_IRUSR ? "r" : "-" );
+                fprintf(stdout, s.st_mode & S_IWUSR ? "w" : "-" );
+                fprintf(stdout, s.st_mode & S_IXUSR ? "x" : "-" );
+                fprintf(stdout, s.st_mode & S_IRGRP ? "r" : "-" );
+                fprintf(stdout, s.st_mode & S_IWGRP ? "w" : "-" );
+                fprintf(stdout, s.st_mode & S_IXGRP ? "x" : "-" );
+                fprintf(stdout, s.st_mode & S_IROTH ? "r" : "-" );
+                fprintf(stdout, s.st_mode & S_IWOTH ? "w" : "-" );
+                fprintf(stdout, s.st_mode & S_IXOTH ? "x" : "-" );
+
+                pwd = getpwuid(s.st_uid);
+                fprintf(stdout," %s ", pwd->pw_name);
+
+                grp = getgrgid(s.st_gid);
+                fprintf(stdout," %s ", grp->gr_name);
+
+                fprintf(stdout," %lld ", (long long)s.st_size);
+
+                strcpy(buffer,ctime(&s.st_mtime));
+                buffer[strlen(buffer)-1]='\0';
+                fprintf(stdout, " %s ", buffer);
+
+                if(!access(dptr->d_name,F_OK)){ 
+                    struct stat st;
+                    stat(dptr->d_name, &st);
+                    if(S_ISDIR(st.st_mode)) {
+                        printf(BLUE"%s     "RESET_COLOR,dptr->d_name); 
+                    } 
+                    else {
+                        printf(GREEN"%s     "RESET_COLOR,dptr->d_name); 
+                    }
+                } 
+                else{
+                    printf("%s     ",dptr->d_name);
+                }
+                printf("\n");
+            }
+        }
+        closedir(dirp);
+    } 
+    else{
+        fprintf(stderr, "Usage :\n   - ls\n");
     }
     return 1;
 }

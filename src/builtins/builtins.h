@@ -4,10 +4,16 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <dirent.h>
+#include <grp.h>
+#include <pwd.h>
+#include <getopt.h>
+#include <time.h>
 #include <fcntl.h>
 #include <string.h>
-#include "../cmd/shell.h"
+#include <sys/stat.h>
 #include "../cmd/cmd.h"
+#include "../cmd/shell.h"
 
 typedef int (*pointer_function) (char**);
 
@@ -29,10 +35,13 @@ int sh_cat(char** args);
 
 int sh_mkdir(char** args);
 
-extern const char* list_builtins[7];
+int sh_ls(char** args);
+
+
+extern const char* list_builtins[8];
 
 extern const int sh_nb_builtins;
 
-extern pointer_function builtins_func[7];
+extern pointer_function builtins_func[8];
 
 #endif
