@@ -6,10 +6,12 @@ int sh_cat(char** args);
 int sh_cd(char** args);
 int sh_echo(char** args);
 int sh_exit(char** args);
+int sh_history(char** args);
 int sh_list_builtins(char** args);
 int sh_ls(char** args);
 int sh_mkdir(char** args);
 int sh_pwd(char** args);
+int sh_rm(char** args);
 
 //Les Couleurs :
 #define RESET_COLOR "\e[m"
@@ -22,10 +24,12 @@ const char* list_builtins[] = {
     "cd",
     "echo",
     "exit",
+    "history",
     "list-builtins",
     "ls",
     "mkdir",
-    "pwd"
+    "pwd",
+    "rm"
 };
 
 pointer_function builtins_func[] = {
@@ -33,14 +37,16 @@ pointer_function builtins_func[] = {
     &sh_cd,
     &sh_echo,
     &sh_exit,
+    &sh_history,
     &sh_list_builtins,
     &sh_ls,
     &sh_mkdir,
-    &sh_pwd
+    &sh_pwd,
+    &sh_rm
 };
 
 
-const int sh_nb_builtins = 8;
+const int sh_nb_builtins = 10;
 /*
 int sh_nb_builtins(void){
     return sizeof(list_builtins) / sizeof(char *);
@@ -53,6 +59,14 @@ int sh_list_builtins(char** args){
             printf("    %i - %s\n",i,list_builtins[i]);
         }
     }
+    return 1;
+}
+
+int sh_history(char** args){
+    if (args){
+        print_hist(current->history);
+    }
+
     return 1;
 }
 
@@ -71,12 +85,8 @@ int sh_ls(char** args){
         argc++;
     }
 
-    if(argc<4){
-        if(args[1] == NULL){
-            dirp=opendir(cwd);
-        } else {
-            dirp=opendir(args[1]);
-        }
+    if(argc<4){   
+        dirp=opendir(cwd);
 
         if (dirp==NULL) {
             printf("No such file or directory\n");
@@ -231,6 +241,21 @@ int sh_mkdir(char** args){
             else {
                 mkdir(*(args+i), S_IRUSR | S_IWUSR | S_IXUSR);
             }
+        }
+    }
+    return 1;
+}
+
+int sh_rm(char** args){
+    int param;
+    for(int i=1;*(args+i)!=NULL;i++){
+        param=open(args[i],O_RDONLY);
+        if(param==-1){
+            printf("rm: Can't delete %s\n",args[i]);
+            continue;
+        }
+        else{
+            remove(args[i]);
         }
     }
     return 1;

@@ -29,6 +29,8 @@ int sh_exit(char** args);
 
 int sh_pwd(char** args);
 
+int sh_history(char** args);
+
 int sh_echo(char** args);
 
 int sh_cat(char** args);
@@ -37,11 +39,12 @@ int sh_mkdir(char** args);
 
 int sh_ls(char** args);
 
+int sh_rm(char** args);
 
-extern const char* list_builtins[8];
+extern const char* list_builtins[10];
 
 extern const int sh_nb_builtins;
 
-extern pointer_function builtins_func[8];
+extern pointer_function builtins_func[10];
 
 #endif

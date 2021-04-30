@@ -8,8 +8,11 @@ void shell_init(void){
     }
 
     current->name = "420sh";
+
+    current->history = history_init();
 }
 
 void shell_destroy(void){
+    hist_destroy(current->history);
     free(current);
 }

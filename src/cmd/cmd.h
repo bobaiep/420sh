@@ -8,14 +8,21 @@
 
 typedef struct History {
   char** lines;
-  int max_size;
   int size;
-  int begin;
+  int start;
 } History;
 
 //Print the usage for the shell.
 void print_main_help(void);
 
 int file_exist(const char *filename);
+
+History* history_init();
+
+void add_to_hist(History* hist, char* command);
+
+void print_hist(History* hist);
+
+void hist_destroy(History* hist);
 
 #endif

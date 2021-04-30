@@ -9,6 +9,7 @@
 #include "../builtins/builtins.h"
 #include "../parser/parser.h"
 #include "../cmd/shell.h"
+#include "../cmd/cmd.h"
 
 int sh_launch(char **args);
 

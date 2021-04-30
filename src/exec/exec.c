@@ -53,6 +53,7 @@ void main_loop(){
 	do {
 		printf("%s > ",current->pwd);
 		line = sh_read_line();
+		add_to_hist(current->history,line);
 		args = sh_split_line(line);
 		status = sh_execute(args);
 
