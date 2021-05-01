@@ -48,7 +48,7 @@ void add_to_hist(History* hist, char* command){
 void print_hist(History* hist){
     if (hist != NULL){
         for (int i = hist->start; i < hist->size; i++){
-            printf("%s",hist->lines[i]);
+            printf("%i %s",i,hist->lines[i]);
         }
     }
 }

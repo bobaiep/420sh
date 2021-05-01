@@ -4,6 +4,7 @@
 //Déclaration de nos builtins:
 int sh_cat(char** args);
 int sh_cd(char** args);
+int sh_cp(char** args);
 int sh_echo(char** args);
 int sh_exit(char** args);
 int sh_history(char** args);
@@ -12,16 +13,20 @@ int sh_ls(char** args);
 int sh_mkdir(char** args);
 int sh_pwd(char** args);
 int sh_rm(char** args);
+int sh_type(char** args);
 
 //Les Couleurs :
 #define RESET_COLOR "\e[m"
 #define GREEN "\e[32m"
 #define BLUE "\e[36m" 
 
+#define BUFFER_SIZE 512
+
 //Création d'une liste de nos builtins:
 const char* list_builtins[] = {
     "cat",
     "cd",
+    "cp",
     "echo",
     "exit",
     "history",
@@ -29,12 +34,14 @@ const char* list_builtins[] = {
     "ls",
     "mkdir",
     "pwd",
-    "rm"
+    "rm",
+    "type"
 };
 
 pointer_function builtins_func[] = {
     &sh_cat,
     &sh_cd,
+    &sh_cp,
     &sh_echo,
     &sh_exit,
     &sh_history,
@@ -42,11 +49,11 @@ pointer_function builtins_func[] = {
     &sh_ls,
     &sh_mkdir,
     &sh_pwd,
-    &sh_rm
+    &sh_rm,
+    &sh_type
 };
 
-
-const int sh_nb_builtins = 10;
+const int sh_nb_builtins = 12;
 /*
 int sh_nb_builtins(void){
     return sizeof(list_builtins) / sizeof(char *);
@@ -202,6 +209,46 @@ int sh_cd(char** args){
     return 1;
 }
 
+int sh_cp(char** args){
+    FILE* fSrc;
+    FILE* fDest;
+    char buffer[512]; 
+    int NbLus; 
+    char outfilename[1000]; 
+    int argc = 0;
+
+    for (size_t i = 0; *(args+i) != NULL; i++){
+        argc++;
+    }
+
+    if(argc == 3){
+        if ((fSrc = fopen(args[1], "rb")) == NULL) { 
+            fprintf(stderr,"File does not exist !\n");
+            return 1;
+        }
+
+        fDest = fopen(args[2], "wb");
+        if (fDest == NULL){
+            sprintf(outfilename, "%s/%s", args[2], basename(args[1])); 
+            fDest = fopen(outfilename, "w");
+        } 
+        else {
+            fDest = fopen(args[2], "wb");
+        }
+
+        while ((NbLus = fread(buffer, 1, 512, fSrc)) != 0) {
+            fwrite(buffer, 1, NbLus, fDest);
+        }
+
+        fclose(fDest);
+        fclose(fSrc);
+    } 
+    else{
+        printf("Usage: cp path_to_file path_to_new_file\n");
+    }
+    return 1;
+}
+
 int sh_echo(char** args){
     for (size_t i = 1; *(args+i) != NULL; i++)
     {
@@ -257,6 +304,44 @@ int sh_rm(char** args){
         else{
             remove(args[i]);
         }
+    }
+    return 1;
+}
+
+int sh_type(char** args){
+    int argc = 0;
+    char found;
+    int err;
+
+    char command[BUFFER_SIZE];
+
+    for(size_t i =0; *(args+i) != NULL; i++){
+        argc++;
+    }
+    if (argc == 1){
+        printf("\n");
+        return 1;
+    }
+    else{
+        for(size_t i = 1; *(args+i) != NULL; i++){
+            found = 0;
+            for(int j = 0; j < sh_nb_builtins; j++){
+                if (!strcmp(*(args+i),list_builtins[j])){
+                    found = 1;
+                    printf("%s is a shell builtin\n",*(args+i));
+                    break;
+                }
+            }
+            if (!found){
+                err = snprintf(command,BUFFER_SIZE,"type %s", *(args+i));
+                if (err > 0 && err < BUFFER_SIZE){
+                    system(command);
+                }
+                else{
+                    continue;
+                }
+            }
+        } 
     }
     return 1;
 }
