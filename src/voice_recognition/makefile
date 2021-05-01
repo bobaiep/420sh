@@ -1,15 +1,15 @@
 CPPFLAGS = -MMD
 CC = gcc
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -lpthread -lm
 LDFLAGS =
 LDLIBS = 
-LIBS = gstreamer-1.0
+LIBS = miniaudio 
 
-SRC = echo.c echo_test.c single_server.c loop_server.c fork_server.c
+SRC = 
 OBJ = ${SRC:.c=.o}
 DEP = ${SRC:.c=.d}
 
-all: voice_recognition
+all: record
 
 
 -include ${DEP}
