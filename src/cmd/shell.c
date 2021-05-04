@@ -21,6 +21,8 @@ void shell_init(void){
 
     current->history = history_init();
 
+    current->color = 0;
+
     sh_pwd(NULL);
 	strcpy(current->oldpwd,current->pwd);
 
@@ -36,20 +38,20 @@ void shell_destroy(void){
     free(current);
 }
 
-void set_prompt(int color){
-    switch (color)
+void set_prompt(void){
+    switch (current->color)
     {
-    case 0:
-        snprintf(current->prompt,PROMPT_SIZE,RED"[%s@%s"RESET_COLOR" %s"RED"]$"RESET_COLOR, current->username, current->hostname, current->pwd);
-        break;
-    case 1:
-        snprintf(current->prompt,PROMPT_SIZE,BLUE"[%s@%s"RESET_COLOR" %s"BLUE"]$"RESET_COLOR, current->username, current->hostname, current->pwd);
-        break;
-    case 2:
-        snprintf(current->prompt,PROMPT_SIZE,GREEN"[%s@%s"RESET_COLOR" %s"GREEN"]$"RESET_COLOR, current->username, current->hostname, current->pwd);
-        break;
-    default:
-        snprintf(current->prompt,PROMPT_SIZE,RED"[%s@%s"RESET_COLOR" %s"RED"]$"RESET_COLOR, current->username, current->hostname, current->pwd);
-        break;
+        case 0:
+            snprintf(current->prompt,PROMPT_SIZE,RED"[%s@%s"RESET_COLOR" %s"RED"]$"RESET_COLOR, current->username, current->hostname, current->pwd);
+            break;
+        case 1:
+            snprintf(current->prompt,PROMPT_SIZE,BLUE"[%s@%s"RESET_COLOR" %s"BLUE"]$"RESET_COLOR, current->username, current->hostname, current->pwd);
+            break;
+        case 2:
+            snprintf(current->prompt,PROMPT_SIZE,GREEN"[%s@%s"RESET_COLOR" %s"GREEN"]$"RESET_COLOR, current->username, current->hostname, current->pwd);
+            break;
+        default:
+            snprintf(current->prompt,PROMPT_SIZE,RED"[%s@%s"RESET_COLOR" %s"RED"]$"RESET_COLOR, current->username, current->hostname, current->pwd);
+            break;
     }
 }

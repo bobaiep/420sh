@@ -25,6 +25,8 @@ args[0] is "cd", args[1] is the directory,
 If no directory is specified, change the current directory to HOME*/
 int sh_cd(char** args);
 
+int sh_change_color(char** args);
+
 int sh_chmod(char** args);
 
 int sh_cp(char** args);
@@ -50,10 +52,10 @@ int sh_rm(char** args);
 
 int sh_type(char** args);
 
-extern const char* list_builtins[14];
+extern const char* list_builtins[15];
 
 extern const int sh_nb_builtins;
 
-extern pointer_function builtins_func[14];
+extern pointer_function builtins_func[15];
 
 #endif

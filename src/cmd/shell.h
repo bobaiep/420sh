@@ -14,6 +14,7 @@ typedef struct shell{
     char* name;
     char oldpwd[4096];
     char pwd[4096];
+    int color;
     History* history;
     char* prompt;
     char username[USER_NAME_MAX + 1];
@@ -26,6 +27,6 @@ void shell_init(void);
 
 void shell_destroy(void);
 
-void set_prompt(int color);
+void set_prompt(void);
 
 #endif

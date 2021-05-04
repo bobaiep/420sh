@@ -21,6 +21,7 @@ int sh_type(char** args);
 #define RESET_COLOR "\e[m"
 #define GREEN "\e[32m"
 #define BLUE "\e[36m" 
+#define RED "\e[31m"
 
 #define BUFFER_SIZE 512
 
@@ -28,6 +29,7 @@ int sh_type(char** args);
 const char* list_builtins[] = {
     "cat",
     "cd",
+    "change-color",
     "chmod",
     "cp",
     "echo",
@@ -45,6 +47,7 @@ const char* list_builtins[] = {
 pointer_function builtins_func[] = {
     &sh_cat,
     &sh_cd,
+    &sh_change_color,
     &sh_chmod,
     &sh_cp,
     &sh_echo,
@@ -59,7 +62,7 @@ pointer_function builtins_func[] = {
     &sh_type
 };
 
-const int sh_nb_builtins = 14;
+const int sh_nb_builtins = 15;
 /*
 int sh_nb_builtins(void){
     return sizeof(list_builtins) / sizeof(char *);
@@ -212,6 +215,41 @@ int sh_cd(char** args){
     }
     strcpy(current->oldpwd,current->pwd);
     sh_pwd(NULL);
+    return 1;
+}
+
+int sh_change_color(char** args){
+    char* color[3] = {
+        RED" - RED : 0\n"RESET_COLOR,
+        BLUE" - BLUE : 1\n"RESET_COLOR,
+        GREEN" - GREEN : 2\n"RESET_COLOR
+    };
+    if (args!=NULL && args[1] != NULL){
+        if (isNumeric(args[1])){
+            current->color = strtol(args[1], (char**)NULL, 10);
+            return 1;
+        }
+
+        if(strcmp(args[1],"--help") || strcmp(args[1],"-h")){
+            printf("Change the color of the prompt with the specified color_id\n");
+            printf("Usage : change-color color_id\n");
+            printf("color_id :\n");
+            for (int i = 0; i < 3; i++){
+                printf("%s",color[i]);
+            }
+        }
+
+        return 1;
+    }
+
+
+    printf("Choose the color of the prompt : \n");
+    for (int i = 0; i < 3; i++){
+        printf("%s",color[i]);
+    }
+    scanf("%i", &current->color);
+	getchar();
+    
     return 1;
 }
 
