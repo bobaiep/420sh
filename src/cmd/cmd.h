@@ -17,6 +17,8 @@ void print_main_help(void);
 
 int file_exist(const char *filename);
 
+int isNumeric(const char *str);
+
 History* history_init();
 
 void add_to_hist(History* hist, char* command);

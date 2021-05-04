@@ -1,5 +1,10 @@
 #include "exec.h"
 
+#define RESET_COLOR "\e[m"
+#define GREEN "\e[32m"
+#define BLUE "\e[36m" 
+#define RED "\e[31m"
+
 int sh_launch(char **args){
     pid_t pid;
     int status;
@@ -47,9 +52,17 @@ void main_loop(){
 	char *line;
 	char **args;
 	int status;
+	int color = 0;
 	shell_init();
+	printf("Choose the color of the prompt : \n");
+	printf(RED" - RED : 0\n"RESET_COLOR);
+	printf(BLUE" - BLUE : 1\n"RESET_COLOR);
+	printf(GREEN" - GREEN : 2\n"RESET_COLOR);
+    scanf("%i", &color);
+	getchar();
+	printf("\e[1;1H\e[2J");
 	do {
-		set_prompt();
+		set_prompt(color);
 		printf("%s ",current->prompt);
 		line = sh_read_line();
 		add_to_hist(current->history,line);
@@ -59,5 +72,6 @@ void main_loop(){
 		free(line);
 		free(args);
 	} while (status);
+	printf("\e[1;1H\e[2J");
 	shell_destroy();
 }

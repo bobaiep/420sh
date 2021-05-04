@@ -18,6 +18,14 @@ int file_exist(const char *filename){
     return (exist == 0) ? 1 : 0;
 }
 
+int isNumeric(const char *str){
+    for(size_t i = 0; *(str+i) != '\0'; i++){
+        if(*str < '0' || *str > '9')
+            return 0;
+    } 
+    return 1;
+}
+
 History* history_init(){
     History* hist = malloc(sizeof(History));
     

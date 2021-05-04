@@ -4,6 +4,7 @@
 //Déclaration de nos builtins:
 int sh_cat(char** args);
 int sh_cd(char** args);
+int sh_chmod(char** args);
 int sh_cp(char** args);
 int sh_echo(char** args);
 int sh_exit(char** args);
@@ -11,6 +12,7 @@ int sh_history(char** args);
 int sh_list_builtins(char** args);
 int sh_ls(char** args);
 int sh_mkdir(char** args);
+int sh_mv(char** args);
 int sh_pwd(char** args);
 int sh_rm(char** args);
 int sh_type(char** args);
@@ -26,6 +28,7 @@ int sh_type(char** args);
 const char* list_builtins[] = {
     "cat",
     "cd",
+    "chmod",
     "cp",
     "echo",
     "exit",
@@ -33,6 +36,7 @@ const char* list_builtins[] = {
     "list-builtins",
     "ls",
     "mkdir",
+    "mv",
     "pwd",
     "rm",
     "type"
@@ -41,6 +45,7 @@ const char* list_builtins[] = {
 pointer_function builtins_func[] = {
     &sh_cat,
     &sh_cd,
+    &sh_chmod,
     &sh_cp,
     &sh_echo,
     &sh_exit,
@@ -48,12 +53,13 @@ pointer_function builtins_func[] = {
     &sh_list_builtins,
     &sh_ls,
     &sh_mkdir,
+    &sh_mv,
     &sh_pwd,
     &sh_rm,
     &sh_type
 };
 
-const int sh_nb_builtins = 12;
+const int sh_nb_builtins = 14;
 /*
 int sh_nb_builtins(void){
     return sizeof(list_builtins) / sizeof(char *);
@@ -249,6 +255,48 @@ int sh_cp(char** args){
     return 1;
 }
 
+int sh_chmod(char** args){
+    int max=778;
+    int min=0;
+
+    int argc = 0;
+    for(size_t i =0; *(args+i) != NULL; i++){
+        argc++;
+    }
+    if (argc < 3 || argc > 3){
+        printf("Usage : chmod file octal\n");
+        printf("Example : chmod test 754\nOne digit for each class (user, group and others):\n");
+        printf("0 : None\n");
+        printf("1 : Execute only\n");
+        printf("2 : Write only\n");
+        printf("3 : Write and execute \n");
+        printf("4 : Read only\n");
+        printf("5 : Read and execute\n");
+        printf("6 : Read and write \n");
+        printf("7 : Read, write and execute\n");
+    }
+    if(argc==3){
+        if(!isNumeric(args[1])){
+            fprintf(stderr, "Invalid Argument: first argument must be a number\n");
+            return 1;
+        }
+        int octal= strtol(args[1], (char**)NULL, 10);
+        int octalPermissionString = strtol(args[1], (char**)NULL, 8);
+        if(octal < min || octal > max){
+            fprintf(stderr, "Invalid Octal\n");
+            return 1;
+        }
+        if(file_exist(args[2])){
+            chmod(args[2], octalPermissionString);
+        } else {
+            fprintf(stderr, "File does not exist !\n");
+            return 1;
+        }
+    } 
+    return 1;
+}
+
+
 int sh_echo(char** args){
     for (size_t i = 1; *(args+i) != NULL; i++)
     {
@@ -292,6 +340,49 @@ int sh_mkdir(char** args){
     }
     return 1;
 }
+
+int sh_mv(char** args){
+    FILE* old;
+    FILE* new;
+    char buffer[BUFFER_SIZE];
+    int len;
+    char outfilename[1000];
+
+    int argc = 0;
+    for(size_t i =0; *(args+i) != NULL; i++){
+        argc++;
+    }
+
+    if (argc > 3 || argc < 3){
+        printf("Usage : mv old_file path_to_new_file\n");
+        return 1;
+    }
+    if(argc == 3){
+        if ((old = fopen(args[1], "rb")) == NULL) {
+            fprintf(stderr,"%s : File does not exist !\n",args[1]);
+            return 1;
+        }
+
+        new = fopen(args[2], "wb");
+        if (new == NULL){
+            sprintf(outfilename, "%s/%s", args[2], basename(args[1]));
+            new = fopen(outfilename, "w");
+        } 
+        else {
+            new = fopen(args[2], "wb");
+        }
+
+        while ((len = fread(buffer, 1, 512, old)) != 0)
+        fwrite(buffer, 1, len, new);
+
+        fclose(new);
+        fclose(old);
+        remove(args[1]);
+    }
+
+    return 1;
+}
+
 
 int sh_rm(char** args){
     int param;

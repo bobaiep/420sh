@@ -26,6 +26,6 @@ void shell_init(void);
 
 void shell_destroy(void);
 
-void set_prompt(void);
+void set_prompt(int color);
 
 #endif

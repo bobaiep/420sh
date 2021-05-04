@@ -27,7 +27,6 @@ void shell_init(void){
     current->prompt = malloc(PROMPT_SIZE * sizeof(char));
 
     getlogin_r(current->username,USER_NAME_MAX + 1);
-
     gethostname(current->hostname, HOST_NAME_MAX + 1);
 }
 
@@ -37,6 +36,20 @@ void shell_destroy(void){
     free(current);
 }
 
-void set_prompt(void){
-    snprintf(current->prompt,PROMPT_SIZE,RED"[%s@%s %s]$"RESET_COLOR, current->username, current->hostname, current->pwd);
+void set_prompt(int color){
+    switch (color)
+    {
+    case 0:
+        snprintf(current->prompt,PROMPT_SIZE,RED"[%s@%s %s]$"RESET_COLOR, current->username, current->hostname, current->pwd);
+        break;
+    case 1:
+        snprintf(current->prompt,PROMPT_SIZE,BLUE"[%s@%s %s]$"RESET_COLOR, current->username, current->hostname, current->pwd);
+        break;
+    case 2:
+        snprintf(current->prompt,PROMPT_SIZE,GREEN"[%s@%s %s]$"RESET_COLOR, current->username, current->hostname, current->pwd);
+        break;
+    default:
+        snprintf(current->prompt,PROMPT_SIZE,RED"[%s@%s %s]$"RESET_COLOR, current->username, current->hostname, current->pwd);
+        break;
+    }
 }
