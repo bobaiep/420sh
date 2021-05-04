@@ -40,16 +40,16 @@ void set_prompt(int color){
     switch (color)
     {
     case 0:
-        snprintf(current->prompt,PROMPT_SIZE,RED"[%s@%s %s]$"RESET_COLOR, current->username, current->hostname, current->pwd);
+        snprintf(current->prompt,PROMPT_SIZE,RED"[%s@%s"RESET_COLOR" %s"RED"]$"RESET_COLOR, current->username, current->hostname, current->pwd);
         break;
     case 1:
-        snprintf(current->prompt,PROMPT_SIZE,BLUE"[%s@%s %s]$"RESET_COLOR, current->username, current->hostname, current->pwd);
+        snprintf(current->prompt,PROMPT_SIZE,BLUE"[%s@%s"RESET_COLOR" %s"BLUE"]$"RESET_COLOR, current->username, current->hostname, current->pwd);
         break;
     case 2:
-        snprintf(current->prompt,PROMPT_SIZE,GREEN"[%s@%s %s]$"RESET_COLOR, current->username, current->hostname, current->pwd);
+        snprintf(current->prompt,PROMPT_SIZE,GREEN"[%s@%s"RESET_COLOR" %s"GREEN"]$"RESET_COLOR, current->username, current->hostname, current->pwd);
         break;
     default:
-        snprintf(current->prompt,PROMPT_SIZE,RED"[%s@%s %s]$"RESET_COLOR, current->username, current->hostname, current->pwd);
+        snprintf(current->prompt,PROMPT_SIZE,RED"[%s@%s"RESET_COLOR" %s"RED"]$"RESET_COLOR, current->username, current->hostname, current->pwd);
         break;
     }
 }
