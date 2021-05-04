@@ -28,7 +28,7 @@ void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uin
     (void)pOutput;
 }
 
-int record()
+int main()
 {
     ma_result result;
     ma_encoder_config encoderConfig;
@@ -38,12 +38,37 @@ int record()
 
     encoderConfig = ma_encoder_config_init(ma_resource_format_wav, ma_format_f32, 2, 44100);
 
-    if (ma_encoder_init_file("/Audio/toSend.wav", &encoderConfig, &encoder) != MA_SUCCESS) {
+    if (ma_encoder_init_file("./Audio/toSend.wav", &encoderConfig, &encoder) != MA_SUCCESS) {
         printf("Failed to initialize output file.\n");
         return -1;
     }
+    ma_context context;
+    if (ma_context_init(NULL, 0, NULL, &context) != MA_SUCCESS) {
+        // Error.
+    }
 
+    ma_device_info* pPlaybackInfos;
+    ma_uint32 playbackCount;
+    ma_device_info* pCaptureInfos;
+    ma_uint32 captureCount;
+
+    if (ma_context_get_devices(&context, &pPlaybackInfos, &playbackCount, &pCaptureInfos, &captureCount) != MA_SUCCESS) {
+        // Error.
+    }
+
+    // Loop over each device info and do something with it. Here we just print the name with their index. You may want
+    // to give the user the opportunity to choose which device they'd prefer.
+    int i = 0;
+    if(captureCount != 1){
+        for (ma_uint32 iDevice = 0; iDevice < captureCount; iDevice += 1) {
+            printf("%d - %s\n", iDevice, pCaptureInfos[iDevice].name);
+        }
+        int i;
+        printf("Choose the device from which the audio will be captured : ");
+        scanf("%i", &i);
+    }
     deviceConfig = ma_device_config_init(ma_device_type_capture);
+    deviceConfig.capture.pDeviceID = &pCaptureInfos[i].id;
     deviceConfig.capture.format   = encoder.config.format;
     deviceConfig.capture.channels = encoder.config.channels;
     deviceConfig.sampleRate       = encoder.config.sampleRate;
