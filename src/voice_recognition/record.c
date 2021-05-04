@@ -6,8 +6,14 @@ Capturing works in a very similar way to playback. The only difference is the di
 the application sending data to the device, the device will send data to the application. This example just writes the
 data received by the microphone straight to a WAV file.
 */
+
+
 #define MINIAUDIO_IMPLEMENTATION
 #include "library/miniaudio.h"
+
+#ifdef __APPLE__
+#define MA_NO_RUNTIME_LINKING
+#endif
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -22,7 +28,7 @@ void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uin
     (void)pOutput;
 }
 
-int main(int argc, char** argv)
+int record()
 {
     ma_result result;
     ma_encoder_config encoderConfig;
@@ -30,14 +36,9 @@ int main(int argc, char** argv)
     ma_device_config deviceConfig;
     ma_device device;
 
-    if (argc < 2) {
-        printf("No input file.\n");
-        return -1;
-    }
-
     encoderConfig = ma_encoder_config_init(ma_resource_format_wav, ma_format_f32, 2, 44100);
 
-    if (ma_encoder_init_file(argv[1], &encoderConfig, &encoder) != MA_SUCCESS) {
+    if (ma_encoder_init_file("/Audio/toSend.wav", &encoderConfig, &encoder) != MA_SUCCESS) {
         printf("Failed to initialize output file.\n");
         return -1;
     }

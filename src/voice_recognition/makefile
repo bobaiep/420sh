@@ -1,6 +1,6 @@
 CPPFLAGS = -MMD
 CC = gcc
-CFLAGS = -Wall -Wextra -lpthread -lm -ldl
+CFLAGS = -Wall -Wextra -lpthread -ldl -lm
 LDFLAGS =
 LDLIBS = 
 LIBS = miniaudio 
