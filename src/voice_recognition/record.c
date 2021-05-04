@@ -38,7 +38,7 @@ int main()
 
     encoderConfig = ma_encoder_config_init(ma_resource_format_wav, ma_format_f32, 2, 44100);
 
-    if (ma_encoder_init_file("./Audio/toSend.wav", &encoderConfig, &encoder) != MA_SUCCESS) {
+    if (ma_encoder_init_file("toSend.wav", &encoderConfig, &encoder) != MA_SUCCESS) {
         printf("Failed to initialize output file.\n");
         return -1;
     }

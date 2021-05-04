@@ -48,10 +48,9 @@ void main_loop(){
 	char **args;
 	int status;
 	shell_init();
-	sh_pwd(NULL);
-	strcpy(current->oldpwd,current->pwd);
 	do {
-		printf("%s > ",current->pwd);
+		set_prompt();
+		printf("%s ",current->prompt);
 		line = sh_read_line();
 		add_to_hist(current->history,line);
 		args = sh_split_line(line);
