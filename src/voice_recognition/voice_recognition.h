@@ -6,10 +6,6 @@
 #include <string.h>
 #include <err.h>
 
-#define MINIAUDIO_IMPLEMENTATION
-#include "library/miniaudio.h"
-
-
 typedef struct Response{
     char* transcript;
     char* confidence;
@@ -20,7 +16,7 @@ void Tobase64();
 
 int prepare_request();
 
-void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount);
+//void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount);
 
 int record();
 

@@ -2,8 +2,8 @@
 #Author : marius.andre
 
 CC=gcc
-CFLAGS= -Wall -Wextra -Werror -std=c99 -O3 -lpthread -lm -ldl
-LDFLAGS= -rdynamic
+CFLAGS= -Wall -Wextra -std=c99 -O3 -lpthread -lm -ldl
+LDFLAGS= 
 LIBS= miniaudio
 
 SRC= main.c src/builtins/builtins.c src/cmd/cmd.c src/exec/exec.c src/parser/parser.c src/cmd/shell.c src/voice_recognition/voice_recognition.c

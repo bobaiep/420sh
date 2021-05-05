@@ -1,4 +1,6 @@
 #include "voice_recognition.h"
+#define MINIAUDIO_IMPLEMENTATION
+#include "./library/miniaudio.h"
 
 #ifdef __APPLE__
 #define MA_NO_RUNTIME_LINKING
