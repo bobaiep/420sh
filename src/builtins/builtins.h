@@ -13,6 +13,7 @@
 #include <libgen.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <ctype.h>
 #include "../cmd/cmd.h"
 #include "../cmd/shell.h"
 #include "../exec/exec.h"

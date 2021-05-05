@@ -164,7 +164,6 @@ void get_response(Response* new){
         FILE* f = fopen("response.json","r");
         int i = 0;
         char *buff = malloc(sizeof(char)*1000);
-        char *transcript = malloc(512* sizeof(char));
         
         while((fgets(buff, 1000, f)) != NULL)
         {
@@ -175,7 +174,7 @@ void get_response(Response* new){
 
             else if (i == 5){
                 strcpy(new->transcript,buff+25);
-                new->transcript = truncString(transcript,-3);
+                new->transcript = truncString(new->transcript,-3);
             }
             else if (i >= 6 && strstr(buff,"confidence")){
                 strcpy(new->confidence,buff+26);
@@ -184,7 +183,6 @@ void get_response(Response* new){
             i++;
         }
 
-        free(transcript);
         free(buff);
 
         chdir(current->pwd);

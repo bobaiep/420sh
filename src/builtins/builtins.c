@@ -469,6 +469,9 @@ int sh_start_voice(char** args){
     int confidence = strtol(new->confidence, (char**)NULL, 10);
 
     if(confidence >= 50){
+        for(int i = 0; new->transcript[i]; i++){
+            new->transcript[i] = tolower(new->transcript[i]);
+        }
         printf("%s\n", new->transcript);
         add_to_hist(current->history,new->transcript);
 		token = sh_split_line(new->transcript);
