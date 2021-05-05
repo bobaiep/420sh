@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <err.h>
+#include "../cmd/shell.h"
+#include <unistd.h>
 
 typedef struct Response{
     char* transcript;

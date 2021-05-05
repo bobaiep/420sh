@@ -32,7 +32,7 @@ char *truncString(char *str, int pos)
 int prepare_request(){
     Tobase64();
     char * buffer = 0;
-    long length;
+    long length = 0;
     FILE * f = fopen ("toSend", "rb");
 
     if (f){
@@ -151,6 +151,8 @@ int record(){
 
 void get_response(Response* new){
     if (new != NULL){
+        chdir("src/voice_recognition");
+
         if(record() != 0)
             err(2,"error record");
 
@@ -184,5 +186,7 @@ void get_response(Response* new){
 
         free(transcript);
         free(buff);
+
+        chdir(current->pwd);
     }
 }
