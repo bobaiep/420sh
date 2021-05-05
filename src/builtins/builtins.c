@@ -15,6 +15,7 @@ int sh_mkdir(char** args);
 int sh_mv(char** args);
 int sh_pwd(char** args);
 int sh_rm(char** args);
+int sh_start_voice(char** args);
 int sh_type(char** args);
 
 //Les Couleurs :
@@ -41,6 +42,7 @@ const char* list_builtins[] = {
     "mv",
     "pwd",
     "rm",
+    "start-voice",
     "type"
 };
 
@@ -59,10 +61,11 @@ pointer_function builtins_func[] = {
     &sh_mv,
     &sh_pwd,
     &sh_rm,
+    &sh_start_voice,
     &sh_type
 };
 
-const int sh_nb_builtins = 15;
+const int sh_nb_builtins = 16;
 /*
 int sh_nb_builtins(void){
     return sizeof(list_builtins) / sizeof(char *);
@@ -421,7 +424,6 @@ int sh_mv(char** args){
     return 1;
 }
 
-
 int sh_rm(char** args){
     int param;
     for(int i=1;*(args+i)!=NULL;i++){
@@ -435,6 +437,36 @@ int sh_rm(char** args){
         }
     }
     return 1;
+}
+
+int sh_start_voice(char** args){
+    Response* new = malloc(sizeof(Response));
+
+    char **args;
+	int status;
+
+    new->transcript = malloc(BUFFER_SIZE * sizeof(char));
+    new->confidence = malloc(BUFFER_SIZE * sizeof(char));
+
+    get_response(new);
+
+    int confidence = strtol(new->confidence, (char**)NULL, 10);
+
+    if(confidence >= 50){
+        printf("%s\n", new->transcript);
+        add_to_hist(current->history,new->transcript);
+		args = sh_split_line(new->transcript);
+		status = sh_execute(args);
+
+		free(new->transcript);
+        free(new->confidence);
+        free(new);
+		free(args);
+    }
+    else{
+        printf("Speech Recognition didn't succeed !\n");
+        return 1;
+    }
 }
 
 int sh_type(char** args){

@@ -12,7 +12,7 @@
 
 typedef struct Response{
     char* transcript;
-    float confidence;
+    char* confidence;
 } Response;
 
 
@@ -24,6 +24,6 @@ void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uin
 
 int record();
 
-Response* get_response();
+void get_response(Response* new);
 
 #endif

@@ -15,6 +15,8 @@
 #include <sys/stat.h>
 #include "../cmd/cmd.h"
 #include "../cmd/shell.h"
+#include "../exec/exec.h"
+#include "../voice_recognition/voice_recognition.h"
 
 typedef int (*pointer_function) (char**);
 
@@ -52,10 +54,12 @@ int sh_rm(char** args);
 
 int sh_type(char** args);
 
-extern const char* list_builtins[15];
+int sh_start_voice(char** args);
+
+extern const char* list_builtins[16];
 
 extern const int sh_nb_builtins;
 
-extern pointer_function builtins_func[15];
+extern pointer_function builtins_func[16];
 
 #endif
