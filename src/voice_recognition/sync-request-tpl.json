@@ -1,0 +1,11 @@
+{
+  "config": {
+    "encoding":"LINEAR16",
+    "sampleRateHertz":44100,
+    "languageCode":"fr-FR",
+    "audio_channel_count":2
+  },
+  "audio": {
+      "content":""
+  }
+}

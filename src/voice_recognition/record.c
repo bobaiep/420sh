@@ -1,22 +1,61 @@
-/*
-Demonstrates how to capture data from a microphone using the low-level API.
-This example simply captures data from your default microphone until you press Enter. The output is saved to the file
-specified on the command line.
-Capturing works in a very similar way to playback. The only difference is the direction of data movement. Instead of
-the application sending data to the device, the device will send data to the application. This example just writes the
-data received by the microphone straight to a WAV file.
-*/
-
-
 #define MINIAUDIO_IMPLEMENTATION
 #include "library/miniaudio.h"
 
+
 #ifdef __APPLE__
 #define MA_NO_RUNTIME_LINKING
+ 
 #endif
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <err.h>
+
+void Tobase64()
+{
+    if(!__APPLE__){
+    system("base64 toSend.wav -w 0 > toSend");
+    }
+    else
+    {
+        system("base64 toSend.wav > toSend");
+    }
+}
+
+int parse()
+{
+    Tobase64();
+    char * buffer = 0;
+    long length;
+    FILE * f = fopen ("toSend", "rb");
+
+    if (f)
+    {
+    fseek (f, 0, SEEK_END);
+    length = ftell (f);
+    fseek (f, 0, SEEK_SET);
+    buffer = malloc (length);
+    if (buffer)
+    {
+        fread (buffer, 1, length, f);
+    }
+    fclose (f);
+    }
+
+    char * buffer2 = 0;
+    long length2;
+    FILE * f2 = fopen ("sync-request.json", "w+");
+    if(f)
+    {
+            fgets(buffer2, 164,f2);
+            size_t written  = fwrite((void*) buffer, (size_t) length, 1 , f2);
+            if(written < 1){
+                err(1,"Can't write buffer");}
+        fclose (f2);
+    }
+    return 0;
+}
 
 void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount)
 {
@@ -28,7 +67,7 @@ void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uin
     (void)pOutput;
 }
 
-int main()
+int record()
 {
     ma_result result;
     ma_encoder_config encoderConfig;
@@ -36,7 +75,7 @@ int main()
     ma_device_config deviceConfig;
     ma_device device;
 
-    encoderConfig = ma_encoder_config_init(ma_resource_format_wav, ma_format_f32, 2, 44100);
+    encoderConfig = ma_encoder_config_init(ma_resource_format_wav, ma_format_s16, 2, 44100);
 
     if (ma_encoder_init_file("toSend.wav", &encoderConfig, &encoder) != MA_SUCCESS) {
         printf("Failed to initialize output file.\n");
@@ -96,3 +135,16 @@ int main()
 
     return 0;
 }
+<<<<<<< HEAD
+
+int main()
+{
+    if(record() != 0)
+        err(2,"error record");
+    if(parse() != 0)
+        err(1,"error parser");
+    system("curl -s -H \"Content-Type: application/json\" -H \"Authorization: Bearer \"$(gcloud auth application-default print-access-token) https://speech.googleapis.com/v1/speech:recognize -d @request.json > response.json");
+    return 0;
+}
+=======
+>>>>>>> c4ec773d25317120fde0cd7c02b1dbfe14fe124c
