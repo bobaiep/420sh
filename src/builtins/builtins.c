@@ -463,6 +463,8 @@ int sh_start_voice(char** args){
         free(new->confidence);
         free(new);
 		free(token);
+
+        return 1;
     }
     else{
         printf("Speech Recognition didn't succeed !\n");
