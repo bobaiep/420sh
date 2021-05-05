@@ -4,7 +4,7 @@
 
 #ifdef __APPLE__
 #define MA_NO_RUNTIME_LINKING
- 
+#define AP 
 #endif
 
 #include <stdlib.h>
@@ -14,13 +14,11 @@
 
 void Tobase64()
 {
-    if(!__APPLE__){
-    system("base64 toSend.wav -w 0 > toSend");
-    }
-    else
-    {
+    #if defined(AP)
         system("base64 toSend.wav > toSend");
-    }
+    #else
+        system("base64 toSend.wav -w 0 > toSend");
+    #endif
 }
 
 int parse()
@@ -30,29 +28,39 @@ int parse()
     long length;
     FILE * f = fopen ("toSend", "rb");
 
-    if (f)
-    {
-    fseek (f, 0, SEEK_END);
-    length = ftell (f);
-    fseek (f, 0, SEEK_SET);
-    buffer = malloc (length);
-    if (buffer)
-    {
-        fread (buffer, 1, length, f);
+    if (f){
+        fseek (f, 0, SEEK_END);
+        length = ftell (f);
+        fseek (f, 0, SEEK_SET);
+        buffer = malloc (length);
+        if (buffer){
+            fread (buffer, 1, length, f);
+        }
+        fclose (f);
     }
-    fclose (f);
-    }
+    
+    FILE * template = fopen("sync-request-tpl.json", "r");
+    FILE * new = fopen("sync-request.json", "w");
+    if(template)
+    {
+        char newLine[length+512];
+        buffer[strcspn(buffer, "\n")] = 0;
+        snprintf(newLine,length+512,"      \"content\":\"%s\"\n", buffer);
 
-    char * buffer2 = 0;
-    long length2;
-    FILE * f2 = fopen ("sync-request.json", "w+");
-    if(f)
-    {
-            fgets(buffer2, 164,f2);
-            size_t written  = fwrite((void*) buffer, (size_t) length, 1 , f2);
-            if(written < 1){
-                err(1,"Can't write buffer");}
-        fclose (f2);
+        char readed[1000];
+        int count = 0;
+        while ((fgets(readed, 1000, template)) != NULL)
+        {
+            count++;
+
+            if (count == 9)
+                fputs(newLine, new);
+            else{
+                fputs(readed, new);
+            }
+        }
+        fclose(new);
+        fclose(template);
     }
     return 0;
 }
@@ -135,7 +143,6 @@ int record()
 
     return 0;
 }
-<<<<<<< HEAD
 
 int main()
 {
@@ -143,8 +150,6 @@ int main()
         err(2,"error record");
     if(parse() != 0)
         err(1,"error parser");
-    system("curl -s -H \"Content-Type: application/json\" -H \"Authorization: Bearer \"$(gcloud auth application-default print-access-token) https://speech.googleapis.com/v1/speech:recognize -d @request.json > response.json");
+    system("curl -s -H \"Content-Type: application/json\" -H \"Authorization: Bearer \"$(gcloud auth application-default print-access-token) https://speech.googleapis.com/v1/speech:recognize -d @sync-request.json > response.json");
     return 0;
 }
-=======
->>>>>>> c4ec773d25317120fde0cd7c02b1dbfe14fe124c
