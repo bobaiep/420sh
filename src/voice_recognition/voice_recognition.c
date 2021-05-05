@@ -1,19 +1,11 @@
-#define MINIAUDIO_IMPLEMENTATION
-#include "library/miniaudio.h"
-
+#include "voice_recognition.h"
 
 #ifdef __APPLE__
 #define MA_NO_RUNTIME_LINKING
 #define AP 
 #endif
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <err.h>
-
-void Tobase64()
-{
+void Tobase64(){
     #if defined(AP)
         system("base64 toSend.wav > toSend");
     #else
@@ -21,8 +13,7 @@ void Tobase64()
     #endif
 }
 
-int parse()
-{
+int parse(){
     Tobase64();
     char * buffer = 0;
     long length;
@@ -65,8 +56,7 @@ int parse()
     return 0;
 }
 
-void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount)
-{
+void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount){
     ma_encoder* pEncoder = (ma_encoder*)pDevice->pUserData;
     MA_ASSERT(pEncoder != NULL);
 
@@ -75,8 +65,7 @@ void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uin
     (void)pOutput;
 }
 
-int record()
-{
+int record(){
     ma_result result;
     ma_encoder_config encoderConfig;
     ma_encoder encoder;
@@ -144,12 +133,16 @@ int record()
     return 0;
 }
 
-int main()
-{
+Response* get_response(){
+    Response* new = malloc(sizeof(Response));
+
     if(record() != 0)
         err(2,"error record");
+
     if(parse() != 0)
         err(1,"error parser");
+
     system("curl -s -H \"Content-Type: application/json\" -H \"Authorization: Bearer \"$(gcloud auth application-default print-access-token) https://speech.googleapis.com/v1/speech:recognize -d @sync-request.json > response.json");
-    return 0;
+
+    return new;
 }
