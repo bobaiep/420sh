@@ -440,9 +440,10 @@ int sh_rm(char** args){
 }
 
 int sh_start_voice(char** args){
+    (void)args;
     Response* new = malloc(sizeof(Response));
 
-    char **args;
+    char **token;
 	int status;
 
     new->transcript = malloc(BUFFER_SIZE * sizeof(char));
@@ -455,13 +456,13 @@ int sh_start_voice(char** args){
     if(confidence >= 50){
         printf("%s\n", new->transcript);
         add_to_hist(current->history,new->transcript);
-		args = sh_split_line(new->transcript);
-		status = sh_execute(args);
+		token = sh_split_line(new->transcript);
+		status = sh_execute(token);
 
 		free(new->transcript);
         free(new->confidence);
         free(new);
-		free(args);
+		free(token);
     }
     else{
         printf("Speech Recognition didn't succeed !\n");
