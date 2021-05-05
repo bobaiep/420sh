@@ -13,7 +13,7 @@ void Tobase64(){
     #endif
 }
 
-int parse(){
+int prepare_request(){
     Tobase64();
     char * buffer = 0;
     long length;
@@ -139,7 +139,7 @@ Response* get_response(){
     if(record() != 0)
         err(2,"error record");
 
-    if(parse() != 0)
+    if(prepare_request() != 0)
         err(1,"error parser");
 
     system("curl -s -H \"Content-Type: application/json\" -H \"Authorization: Bearer \"$(gcloud auth application-default print-access-token) https://speech.googleapis.com/v1/speech:recognize -d @sync-request.json > response.json");

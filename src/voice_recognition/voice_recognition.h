@@ -18,7 +18,7 @@ typedef struct Response{
 
 void Tobase64();
 
-int parse();
+int prepare_request();
 
 void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount);
 
