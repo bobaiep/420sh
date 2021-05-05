@@ -161,7 +161,6 @@ void get_response(Response* new){
         int i = 0;
         char *buff = malloc(sizeof(char)*1000);
         char *transcript = malloc(512* sizeof(char));
-        char *conf = malloc(512* sizeof(char));
         
         while((fgets(buff, 1000, f)) != NULL)
         {
@@ -180,5 +179,8 @@ void get_response(Response* new){
             }     
             i++;
         }
+
+        free(transcript);
+        free(buff);
     }
 }
