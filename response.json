@@ -1,7 +1,0 @@
-{
-  "error": {
-    "code": 400,
-    "message": "RecognitionAudio not set.",
-    "status": "INVALID_ARGUMENT"
-  }
-}
