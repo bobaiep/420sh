@@ -60,7 +60,7 @@ int prepare_request(){
         {
             count++;
 
-            if (count == 9)
+            if (count == 30)
                 fputs(newLine, new);
             else{
                 fputs(readed, new);

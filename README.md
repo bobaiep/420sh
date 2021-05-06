@@ -5,9 +5,6 @@
 
 ## Compiling
 
-**Requires [Libsprec](https://github.com/H2CO3/libsprec) for speech recognition.**
-
-
 ```sh
 make
 ``` 
@@ -18,14 +15,15 @@ After compiling, run :
 ```sh
 ./main
 ```
-To run the shell with voice recognition (not implemented yet): 
 
-First, add your private service account key from Google to src/voice_recognition and rename it to "420sh.json".
+First, Set the environment variable GOOGLE_APPLICATION_CREDENTIALS to the path of the JSON file that contains your service account key
 
-Then run:
+Then, [Install and initialize the Cloud SDK](https://cloud.google.com/sdk/docs/install).
+
+To run a command with voice recognition (in the shell): 
 
 ```sh
-./main --voice
+start-voice
 ```
 
 ## Author

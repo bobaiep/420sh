@@ -3,7 +3,28 @@
     "encoding":"LINEAR16",
     "sampleRateHertz":44100,
     "languageCode":"en-US",
-    "audio_channel_count":2
+    "audio_channel_count":2,
+    "speechContexts": [
+      {
+        "phrases": ["cat",
+          "cd",
+          "change-color",
+          "chmod",
+          "cp",
+          "echo",
+          "exit",
+          "history",
+          "list-builtins",
+          "ls",
+          "mkdir",
+          "mv",
+          "pwd",
+          "rm",
+          "start-voice",
+          "type",
+          "main.c"]
+      }
+    ]
   },
   "audio": {
       "content":""
