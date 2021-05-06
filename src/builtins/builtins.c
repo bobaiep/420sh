@@ -305,8 +305,8 @@ int sh_chmod(char** args){
         argc++;
     }
     if (argc < 3 || argc > 3){
-        printf("Usage : chmod file octal\n");
-        printf("Example : chmod test 754\nOne digit for each class (user, group and others):\n");
+        printf("Usage : chmod octal file\n");
+        printf("Example : chmod 754 test\nOne digit for each class (user, group and others):\n");
         printf("0 : None\n");
         printf("1 : Execute only\n");
         printf("2 : Write only\n");
