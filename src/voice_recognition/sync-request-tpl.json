@@ -2,7 +2,7 @@
   "config": {
     "encoding":"LINEAR16",
     "sampleRateHertz":44100,
-    "languageCode":"fr-FR",
+    "languageCode":"en-US",
     "audio_channel_count":2
   },
   "audio": {
