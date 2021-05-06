@@ -448,23 +448,7 @@ int sh_start_voice(char** args){
     new->transcript = malloc(BUFFER_SIZE * sizeof(char));
     new->confidence = malloc(BUFFER_SIZE * sizeof(char));
 
-    pid_t pid;
-    int status;
-
-    pid = fork();
-    if (pid == 0) {
-        get_response(new);
-    } 
-	else if (pid < 0) {
-        // Error forking
-        perror("420sh");
-    } 
-	else {
-        // Parent process
-        do {
-        	waitpid(pid, &status, WUNTRACED);
-        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
-    }
+    get_response(new);
 
     int confidence = strtol(new->confidence, (char**)NULL, 10);
 
