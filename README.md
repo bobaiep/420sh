@@ -30,7 +30,7 @@ start-voice
 
 👤 **Marius ANDRE (marius.andre)** *In Charge of the Shell*
 
-* Github: [@bobafeet2000](https://github.com/bobafeet2000)
+* Github: [@bobaiep](https://github.com/bobaiep)
 
 👤 **Adam ELZAIM (adam.elzaim)** *In Charge of the Web*
 
