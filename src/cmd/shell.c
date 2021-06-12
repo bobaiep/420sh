@@ -25,6 +25,7 @@ void shell_init(void){
 
     sh_pwd(NULL);
 	strcpy(current->oldpwd,current->pwd);
+    strcpy(current->exe_pwd,current->pwd);
 
     current->prompt = malloc(PROMPT_SIZE * sizeof(char));
 

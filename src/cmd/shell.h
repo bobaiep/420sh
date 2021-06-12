@@ -14,6 +14,7 @@ typedef struct shell{
     char* name;
     char oldpwd[4096];
     char pwd[4096];
+    char exe_pwd[4096];
     int color;
     History* history;
     char* prompt;

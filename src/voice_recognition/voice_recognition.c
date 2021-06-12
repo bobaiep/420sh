@@ -2,6 +2,8 @@
 #define MINIAUDIO_IMPLEMENTATION
 #include "./library/miniaudio.h"
 
+#define MA_NO_PULSEAUDIO
+
 #ifdef __APPLE__
 #define MA_NO_RUNTIME_LINKING
 #define AP 
@@ -142,6 +144,7 @@ int record(){
 
     printf("Press Enter to stop recording...\n");
     getchar();
+    getchar();
     
     ma_device_uninit(&device);
     ma_encoder_uninit(&encoder);
@@ -151,7 +154,9 @@ int record(){
 
 void get_response(Response* new){
     if (new != NULL){
-        chdir("src/voice_recognition");
+        char* voice_pwd = malloc(4118 * sizeof(char));
+        snprintf(voice_pwd,4118,"%s/src/voice_recognition",current->exe_pwd);
+        chdir(voice_pwd);
 
         if(record() != 0)
             err(2,"error record");
