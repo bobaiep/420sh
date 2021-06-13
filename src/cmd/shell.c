@@ -27,6 +27,8 @@ void shell_init(int pipe_fds){
 
     current->history = history_init();
 
+    current->aliases = aliases_init();
+
     current->color = 0;
 
     sh_pwd(NULL);
@@ -41,6 +43,7 @@ void shell_init(int pipe_fds){
 
 void shell_destroy(void){
     hist_destroy(current->history);
+    aliases_destroy(current->aliases);
     free(current->prompt);
     free(current);
 }

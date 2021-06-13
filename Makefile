@@ -2,7 +2,7 @@
 #Author : marius.andre
 
 CC=gcc
-CFLAGS= -Wall -Wextra -std=c99 -O3 `pkg-config --cflags gtk+-3.0`
+CFLAGS= -Wall -Wextra -std=c99 -O3 `pkg-config --cflags gtk+-3.0` -g
 LDFLAGS= -lpthread -lm -ldl `pkg-config --libs gtk+-3.0` -rdynamic
 LIBS= miniaudio 
 

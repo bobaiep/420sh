@@ -5,8 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "../cmd/shell.h"
 
-char* sh_read_line(void);
+char* sh_read_line(FILE* f);
 
 char** sh_split_line(char *line);
 

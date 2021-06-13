@@ -68,3 +68,55 @@ void hist_destroy(History* hist){
     free(hist->lines);
     free(hist);
 }
+
+AliasArray* aliases_init(void){
+    AliasArray* aliases = malloc(sizeof(AliasArray));
+    
+    aliases->nb_alias = 0;
+
+    aliases->size = 100;
+
+    aliases->aliases = malloc(aliases->size * sizeof(Alias));
+
+    return aliases;
+}
+
+void add_alias(AliasArray* aliases, Alias* alias){
+    if (aliases->nb_alias == aliases->size){
+        aliases->size *= 2;
+        aliases->aliases = realloc(aliases->aliases,2 * aliases->size * sizeof(Alias));
+    }
+    aliases->aliases[aliases->nb_alias] = alias;
+    aliases->nb_alias++;
+}
+
+void print_aliases(AliasArray* aliases){
+    if (aliases != NULL){
+        if (aliases->nb_alias == 0){
+            printf("You have not yet created an alias, to create one:\n");
+            printf("    alias alias_name cmd\n");
+        }
+        else{
+            for (int i = 0; i < aliases->nb_alias; i++){
+                printf("%i %s :",i,aliases->aliases[i]->alias);
+                for (int j = 0 ; j < aliases->aliases[i]->cmd_size; j++){
+                    printf(" %s",aliases->aliases[i]->cmd[j]);
+                }
+                printf("\n");
+            }
+        }
+    }
+}
+
+void aliases_destroy(AliasArray* aliases){
+    for (int i = 0; i < aliases->nb_alias; i++){
+        for(int j = 0; j < aliases->aliases[i]->cmd_size; j++){ 
+            free(aliases->aliases[i]->cmd[j]);
+        }
+        free(aliases->aliases[i]->cmd);
+        free(aliases->aliases[i]->alias);
+        free(aliases->aliases[i]);  
+    }
+    free(aliases->aliases);
+    free(aliases);
+}

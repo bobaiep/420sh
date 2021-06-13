@@ -2,6 +2,7 @@
 #include "builtins.h"
 
 //Déclaration de nos builtins:
+int sh_alias(char** args);
 int sh_cat(char** args);
 int sh_cd(char** args);
 int sh_chmod(char** args);
@@ -28,6 +29,7 @@ int sh_type(char** args);
 
 //Création d'une liste de nos builtins:
 const char* list_builtins[] = {
+    "alias",
     "cat",
     "cd",
     "change-color",
@@ -47,6 +49,7 @@ const char* list_builtins[] = {
 };
 
 pointer_function builtins_func[] = {
+    &sh_alias,
     &sh_cat,
     &sh_cd,
     &sh_change_color,
@@ -65,11 +68,39 @@ pointer_function builtins_func[] = {
     &sh_type
 };
 
-const int sh_nb_builtins = 16;
+const int sh_nb_builtins = 17;
 /*
 int sh_nb_builtins(void){
     return sizeof(list_builtins) / sizeof(char *);
 }*/
+
+int sh_alias(char** args){
+    int argc = 0;
+    for (size_t i = 0; *(args+i) != NULL; i++){
+        argc++;
+    }
+
+    if (argc < 3){
+        print_aliases(current->aliases);
+        return 1;
+    }
+    Alias* new = malloc(sizeof(Alias));
+
+    new->alias = malloc(strlen(args[1]) * sizeof(char));
+    strcpy(new->alias, args[1]);
+
+    new->cmd = calloc(argc - 2 ,sizeof(char*));
+    for (int i = 2; i < argc; i++){
+        new->cmd[i-2] = malloc((strlen(args[i]) + 1) * sizeof(char));
+        strcpy(new->cmd[i-2],args[i]);
+    }
+
+    new->cmd_size = argc - 2;
+
+    add_alias(current->aliases, new);
+
+    return 1;
+}
 
 int sh_list_builtins(char** args){
     if(args){
@@ -459,7 +490,7 @@ int sh_start_voice(char** args){
         printf("%s\n", new->transcript);
         add_to_hist(current->history,new->transcript);
 		token = sh_split_line(new->transcript);
-		sh_execute(token);
+		sh_execute(&token);
 
 		free(new->transcript);
         free(new->confidence);

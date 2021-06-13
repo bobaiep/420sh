@@ -19,6 +19,7 @@ typedef struct shell{
     char exe_pwd[4096];
     int color;
     History* history;
+    AliasArray* aliases;
     char* prompt;
     char username[USER_NAME_MAX + 1];
     char hostname[HOST_NAME_MAX + 1];

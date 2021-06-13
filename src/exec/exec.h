@@ -13,7 +13,7 @@
 
 int sh_launch(char **args);
 
-int sh_execute(char **args);
+int sh_execute(char ***args);
 
 void main_loop();
 

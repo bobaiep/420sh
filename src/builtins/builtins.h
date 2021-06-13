@@ -23,6 +23,8 @@ typedef int (*pointer_function) (char**);
 
 int sh_list_builtins(char** args);
 
+int sh_alias(char** args);
+
 /*Change directory in the shell.
 args[0] is "cd", args[1] is the directory, 
 If no directory is specified, change the current directory to HOME*/
@@ -57,10 +59,10 @@ int sh_type(char** args);
 
 int sh_start_voice(char** args);
 
-extern const char* list_builtins[16];
+extern const char* list_builtins[17];
 
 extern const int sh_nb_builtins;
 
-extern pointer_function builtins_func[16];
+extern pointer_function builtins_func[17];
 
 #endif
