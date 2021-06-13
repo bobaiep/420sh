@@ -1,5 +1,7 @@
-#define _POSIX_C_SOURCE 200809L
 #include "shell.h"
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE 200112L
+#endif
 
 shell* current;
 
@@ -12,12 +14,16 @@ shell* current;
 #define BLUE "\e[36m" 
 #define RED "\e[31m"
 
-void shell_init(void){
+int gethostname(char *name, size_t len);
+
+void shell_init(int pipe_fds){
     if ((current = malloc(sizeof(shell))) == NULL){
         errx(EXIT_FAILURE,"Error while malloc");
     }
 
     current->name = "420sh";
+
+    current->pipe_fds = pipe_fds;
 
     current->history = history_init();
 

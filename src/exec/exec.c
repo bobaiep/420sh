@@ -43,17 +43,31 @@ int sh_execute(char **args){
 	return sh_launch(args);
 }
 
-void main_loop(){
-	char *line;
+void main_loop(int pipe_fds){
+	char* line;
 	char **args;
 	int status;
-	shell_init();
+	char **args1;
+	
+	shell_init(pipe_fds);
 	sh_change_color(NULL);
 	printf("\e[1;1H\e[2J");
+	if (pipe_fds){
+		int flags = fcntl(current->pipe_fds, F_GETFL, 0);
+		fcntl(current->pipe_fds, F_SETFL, flags | O_NONBLOCK);
+	}
 	do {
 		set_prompt();
 		printf("%s ",current->prompt);
 		line = sh_read_line();
+		char* line_gtk = malloc(13 * sizeof(char));
+		if (current->pipe_fds && read(current->pipe_fds,line_gtk,13) >0){
+			printf("%s",line_gtk);
+			add_to_hist(current->history,line_gtk);
+			args1 = sh_split_line(line_gtk);
+			sh_execute(args1);
+		}
+		free(line_gtk);
 		add_to_hist(current->history,line);
 		args = sh_split_line(line);
 		status = sh_execute(args);

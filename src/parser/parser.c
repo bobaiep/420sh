@@ -1,9 +1,10 @@
 #define _POSIX_C_SOURCE 200809L
 #include "parser.h"
 
-char* sh_read_line(void){
+char* sh_read_line(){
 	char *line = NULL;
 	size_t bufsize = 0;
+
 	if (getline(&line, &bufsize, stdin) == -1) {
 		if (feof(stdin)) {
 			exit(EXIT_SUCCESS);  
@@ -13,6 +14,7 @@ char* sh_read_line(void){
 			exit(EXIT_FAILURE);
 		}
 	}
+
 	return line;
 }
 

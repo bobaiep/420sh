@@ -189,6 +189,7 @@ void get_response(Response* new){
         }
 
         free(buff);
+        free(voice_pwd);
 
         chdir(current->pwd);
     }
