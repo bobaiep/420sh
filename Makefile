@@ -15,6 +15,6 @@ all: main
 main: $(OBJ)
 
 clean:
-	rm -r src/voice_recognition/toSend.wav  src/voice_recognition/toSend src/voice_recognition/sync-request.json src/voice_recognition/response.json
+	rm -rf src/voice_recognition/toSend.wav  src/voice_recognition/toSend src/voice_recognition/sync-request.json src/voice_recognition/response.json
 	$(RM) $(OBJ) $(OBJ_TESTS) $(DEP) $(DEP_TESTS) main && clear
 # END

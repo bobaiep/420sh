@@ -63,7 +63,7 @@ void main_loop(int pipe_fds){
 	char **args1;
 	
 	shell_init(pipe_fds);
-	printf("\e[1;1H\e[2J");
+	//printf("\e[1;1H\e[2J");
 
 	if (file_exist(".config")){
 		FILE * config = fopen(".config","r");
