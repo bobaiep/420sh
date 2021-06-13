@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <sys/prctl.h>
 #include "src/cmd/cmd.h"
 #include "src/exec/exec.h"
 #include "src/gui/gui.h"
@@ -22,6 +23,7 @@ int main(int argc, char** argv){
 
             pid = fork();
             if (pid == 0) {
+                prctl(PR_SET_PDEATHSIG, SIGKILL);
                 dup2(pipe_fds[1],STDOUT_FILENO);
                 close(pipe_fds[0]);
                 InitGUI(argc,argv);
