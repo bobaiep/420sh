@@ -528,13 +528,28 @@ int sh_type(char** args){
     else{
         for(size_t i = 1; *(args+i) != NULL; i++){
             found = 0;
-            for(int j = 0; j < sh_nb_builtins; j++){
-                if (!strcmp(*(args+i),list_builtins[j])){
+            int j = 0;
+            for (j = 0; j < current->aliases->nb_alias; j++){
+                if (strcmp(*(args+i),current->aliases->aliases[j]->alias) == 0){
                     found = 1;
-                    printf("%s is a shell builtin\n",*(args+i));
+                    printf("%s ls is an alias for",*(args+i));
+                    for(int g = 0; g < current->aliases->aliases[j]->cmd_size; g++){
+                        printf(" %s", current->aliases->aliases[j]->cmd[g]);
+                    }
+                    printf("\n");
                     break;
                 }
             }
+            if (!found){
+                for(j = 0; j < sh_nb_builtins; j++){
+                    if (strcmp(*(args+i),list_builtins[j]) == 0){
+                        found = 1;
+                        printf("%s is a shell builtin\n",*(args+i));
+                        break;
+                    }
+                }
+            }
+            
             if (!found){
                 err = snprintf(command,BUFFER_SIZE,"type %s", *(args+i));
                 if (err > 0 && err < BUFFER_SIZE){
