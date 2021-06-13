@@ -81,8 +81,8 @@ void main_loop(int pipe_fds){
 	}
 	else{
 		sh_change_color(NULL);
+		printf("\e[1;1H\e[2J");
 	}
-	printf("\e[1;1H\e[2J");
 	if (pipe_fds){
 		int flags = fcntl(current->pipe_fds, F_GETFL, 0);
 		fcntl(current->pipe_fds, F_SETFL, flags | O_NONBLOCK);
