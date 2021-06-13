@@ -53,16 +53,18 @@ int sh_mv(char** args);
 
 int sh_ls(char** args);
 
+int sh_learn(char** args);
+
 int sh_rm(char** args);
 
 int sh_type(char** args);
 
 int sh_start_voice(char** args);
 
-extern const char* list_builtins[17];
+extern const char* list_builtins[18];
 
 extern const int sh_nb_builtins;
 
-extern pointer_function builtins_func[17];
+extern pointer_function builtins_func[18];
 
 #endif

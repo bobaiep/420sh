@@ -1,5 +1,5 @@
 # Welcome to 420sh 👋
-![Version](https://img.shields.io/badge/version-0.1-blue.svg?cacheSeconds=2592000)
+![Version](https://img.shields.io/badge/version-1-blue.svg?cacheSeconds=2592000)
 
 > A C based shell with voice recognition
 
@@ -24,6 +24,16 @@ To run a command with voice recognition (in the shell):
 
 ```sh
 start-voice
+```
+
+If you want command to run on startup (i.e: alias, change-color, neofetch, ...) :
+
+First, create '.config' file, then input a command per line.
+
+You can also add aliases via the following command : 
+
+```sh
+alias alias_name cmd
 ```
 
 ## Author

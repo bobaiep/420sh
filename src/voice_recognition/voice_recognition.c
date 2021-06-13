@@ -9,6 +9,12 @@
 #define AP 
 #endif
 
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE 200809L
+#endif
+
+ssize_t getline(char **restrict lineptr, size_t *restrict n, FILE *restrict stream);
+
 void Tobase64(){
     #if defined(AP)
         system("base64 toSend.wav > toSend");
@@ -201,20 +207,14 @@ void addLink(char* recognized, char* to_recognize)
     snprintf(voice_pwd,4118,"%s/src/voice_recognition",current->exe_pwd);
     chdir(voice_pwd);
     FILE* f = fopen("learned","a");
-    char *sum = strcat(recognized,"£");
+    char *sum = strcat(recognized,"|");
     char *sum1 = strcat(sum,to_recognize);
     fputs(sum1, f);
     fclose(f);
+    free(to_recognize);
     free(voice_pwd);
-    chdir(current->pwd);
+    chdir(current->oldpwd);
 }
-
-/*
-void addPhrase(char* phrase)
-{
-    FILE* f = fopen("sync-request-tpl.json","w");
-    //parsing
-}*/
 
 char* searchLink(char* recognized)
 {
@@ -228,49 +228,51 @@ char* searchLink(char* recognized)
     char* reco = NULL;
     char* toreco = NULL;
 
-    #define SH_TOK_DELIM "£"
+    #define SH_TOK_DELIM "|"
 
-    printf("searchLink - SEARCH1\n");
-    while (f != NULL && getline(&line, &len, f) != -1 && reco != recognized) {
+    getline(&line, &len, f);
+    char boo = 0;
+    while (f != NULL && getline(&line, &len, f) != -1){
         reco = strtok(line, SH_TOK_DELIM);
-        toreco = strtok(line, SH_TOK_DELIM);
+        toreco = strtok(NULL, SH_TOK_DELIM);
+
+        if (strcmp(reco, recognized) == 0){
+    
+            boo = 1;
+            break;
+        }
     }
-    if(reco != recognized)
+    free(voice_pwd);
+    chdir(current->oldpwd);
+    if(!boo)
     {
         return NULL;
     }
-    free(voice_pwd);
-    chdir(current->pwd);
-    printf("searchLink - toreco : %s\n",toreco);
+    
     return toreco;
 }
 
-void Learn(char* transcript, int conf)
+void learn(char* transcript)
 {
-    if(conf > 0)
+
+    //printf("Our algorithm managed to recognize your speech,""\n""However the confidence in his response is low \n");
+    printf("Are you satisfied by the response : %s ?\n   Y: Yes \n   N: No \n", transcript);
+    int rep = getchar();
+    while(rep != (int)'Y' && rep != (int)'N' && rep != (int)'y' && rep != (int)'n')
     {
-        printf("Our algorithm managed to recognize your speech, however the confidence in his response is low \n");
-        printf("Are you satisfied by the response : %s ?\n   Y: Yes \n   N: No \n", transcript);
-        int rep = getchar();
-        while(rep != (int)'Y' && rep != (int)'N' && rep != (int)'y' && rep != (int)'n')
-        {
-            printf("Please enter a valid response \n");
-            rep = getchar();
-        }
-        char word[50];
-        if(rep == (int)'Y' || rep == (int)'y')
-        {
-            printf("Yes");
-        }
-        if(rep == (int)'N' || rep == (int)'n')
-        {
-            printf("Then, please enter what you wanted to say, be careful, your response is case sensitive and our algorithm will learn from it \n");
-            char c = getchar();
-            int i = 0;
-            char *text = calloc(1,1), buffer[50];
-            fgets(buffer, 50 , stdin);
-            printf("word :%s", buffer);
-            addLink(transcript, buffer);
-        }
+        printf("\nPlease enter a valid response \n");
+        rep = getchar();
+    }
+    if(rep == (int)'Y' || rep == (int)'y')
+    {
+        printf("\nYes\n");
+    }
+    if(rep == (int)'N' || rep == (int)'n')
+    {
+        printf("Then, please enter what you wanted to say, be careful,""\n""Your response is case sensitive and our algorithm will learn from it !\n");
+        getchar();
+        char* buffer = calloc(1024,sizeof(char));
+        fgets(buffer, 1024 , stdin);
+        addLink(transcript, buffer);
     }
 }

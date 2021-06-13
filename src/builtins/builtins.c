@@ -10,6 +10,7 @@ int sh_cp(char** args);
 int sh_echo(char** args);
 int sh_exit(char** args);
 int sh_history(char** args);
+int sh_learn(char** args);
 int sh_list_builtins(char** args);
 int sh_ls(char** args);
 int sh_mkdir(char** args);
@@ -38,6 +39,7 @@ const char* list_builtins[] = {
     "echo",
     "exit",
     "history",
+    "learn",
     "list-builtins",
     "ls",
     "mkdir",
@@ -58,6 +60,7 @@ pointer_function builtins_func[] = {
     &sh_echo,
     &sh_exit,
     &sh_history,
+    &sh_learn,
     &sh_list_builtins,
     &sh_ls,
     &sh_mkdir,
@@ -68,7 +71,7 @@ pointer_function builtins_func[] = {
     &sh_type
 };
 
-const int sh_nb_builtins = 17;
+const int sh_nb_builtins = 18;
 /*
 int sh_nb_builtins(void){
     return sizeof(list_builtins) / sizeof(char *);
@@ -124,6 +127,21 @@ int sh_history(char** args){
     }
 
     return 1;
+}
+
+int sh_learn(char** args){
+    int argc = 0;
+    for (int i = 0; *(args+i) != NULL; i++){
+        argc++;
+    }
+    if (argc != 2){
+        printf("Usage : learn word\nword : word that you want to add to known words for Voice Recogniton\n");
+        return 1;
+    }
+    else{
+        learn(args[1]);
+        return 1;
+    }
 }
 
 int sh_ls(char** args){
@@ -495,38 +513,34 @@ int sh_start_voice(char** args){
     }
 
     if(confidence > 80){
-        printf("%s\n", new->transcript);
         add_to_hist(current->history,new->transcript);
-        printf("Add to hist \n");
         token = sh_split_line(new->transcript);
-        printf("SEARCH0\n");
         char *linked = searchLink(new->transcript);
-        printf("SEARCH1\n");
-        printf("LINK RETURNS : %s\n", linked);
         if(linked == NULL)
         {
-            token = sh_split_line(new->transcript);      
+            token = sh_split_line(new->transcript);
+            printf(GREEN"Running : %s"RESET_COLOR"\n", new->transcript);   
         }
         else
         {
             token = sh_split_line(linked);
+            printf(GREEN"Running : %s"RESET_COLOR"\n", linked);
         }
         sh_execute(&token);
         free(token);
     }
     else{
-        printf("SEARCH1\n");
         char* res = searchLink(new->transcript);
-        printf("SEARCH2\n");
         if(res != NULL)
         {
+            printf(GREEN"Running : %s"RESET_COLOR"\n", res);
             add_to_hist(current->history,res);
             token = sh_split_line(res);
             sh_execute(&token);
             free(token);
         }
         else{
-            Learn(new->transcript, atoi(new->confidence));
+            learn(new->transcript);
         }
     }
 

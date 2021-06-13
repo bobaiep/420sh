@@ -30,6 +30,6 @@ void addPhrase(char* phrase);
 
 char* searchLink(char* recognized);
 
-void Learn(char* transcript, int conf);
+void learn(char* transcript);
 
 #endif
