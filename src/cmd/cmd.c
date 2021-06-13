@@ -90,19 +90,38 @@ void add_alias(AliasArray* aliases, Alias* alias){
     aliases->nb_alias++;
 }
 
-void print_aliases(AliasArray* aliases){
+void print_aliases(AliasArray* aliases,char* alias){
     if (aliases != NULL){
         if (aliases->nb_alias == 0){
             printf("You have not yet created an alias, to create one:\n");
             printf("    alias alias_name cmd\n");
         }
         else{
-            for (int i = 0; i < aliases->nb_alias; i++){
-                printf("%i %s :",i,aliases->aliases[i]->alias);
-                for (int j = 0 ; j < aliases->aliases[i]->cmd_size; j++){
-                    printf(" %s",aliases->aliases[i]->cmd[j]);
+            if (alias == NULL){
+                for (int i = 0; i < aliases->nb_alias; i++){
+                    printf("%i %s :",i,aliases->aliases[i]->alias);
+                    for (int j = 0 ; j < aliases->aliases[i]->cmd_size; j++){
+                        printf(" %s",aliases->aliases[i]->cmd[j]);
+                    }
+                    printf("\n");
                 }
-                printf("\n");
+            }else{
+                char boo = 0;
+                for (int i = 0; i < aliases->nb_alias; i++){
+                    if (strcmp(aliases->aliases[i]->alias,alias) == 0){
+                        printf("%i %s :",i,aliases->aliases[i]->alias);
+                        boo = 1;
+                        for (int j = 0 ; j < aliases->aliases[i]->cmd_size; j++){
+                            printf(" %s",aliases->aliases[i]->cmd[j]);
+                        }
+                        printf("\n");
+                        break;
+                    }
+                }
+                if (boo == 0){
+                    printf("%s doesn't exist, if you want to create an alias named %s:\n",alias,alias);
+                    printf("    alias %s cmd\n",alias);
+                }
             }
         }
     }

@@ -81,7 +81,13 @@ int sh_alias(char** args){
     }
 
     if (argc < 3){
-        print_aliases(current->aliases);
+        if (argc == 2){
+            print_aliases(current->aliases,args[1]);
+        }
+        else{
+            print_aliases(current->aliases,NULL);
+        }
+        
         return 1;
     }
     Alias* new = malloc(sizeof(Alias));

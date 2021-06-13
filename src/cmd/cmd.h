@@ -44,7 +44,7 @@ AliasArray* aliases_init(void);
 
 void add_alias(AliasArray* aliases, Alias* alias);
 
-void print_aliases(AliasArray* aliases);
+void print_aliases(AliasArray* aliases,char* alias);
 
 void aliases_destroy(AliasArray* aliases);
 
