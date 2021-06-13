@@ -194,3 +194,83 @@ void get_response(Response* new){
         chdir(current->pwd);
     }
 }
+
+void addLink(char* recognized, char* to_recognize)
+{
+    char* voice_pwd = malloc(4118 * sizeof(char));
+    snprintf(voice_pwd,4118,"%s/src/voice_recognition",current->exe_pwd);
+    chdir(voice_pwd);
+    FILE* f = fopen("learned","a");
+    char *sum = strcat(recognized,"£");
+    char *sum1 = strcat(sum,to_recognize);
+    fputs(sum1, f);
+    fclose(f);
+    free(voice_pwd);
+    chdir(current->pwd);
+}
+
+/*
+void addPhrase(char* phrase)
+{
+    FILE* f = fopen("sync-request-tpl.json","w");
+    //parsing
+}*/
+
+char* searchLink(char* recognized)
+{
+    char* voice_pwd = malloc(4118 * sizeof(char));
+    snprintf(voice_pwd,4118,"%s/src/voice_recognition",current->exe_pwd);
+    chdir(voice_pwd);
+    FILE* f = fopen("learned","r");
+    
+    char* line = NULL;
+    size_t len = 0;
+    char* reco = NULL;
+    char* toreco = NULL;
+
+    #define SH_TOK_DELIM "£"
+
+    printf("searchLink - SEARCH1\n");
+    while (f != NULL && getline(&line, &len, f) != -1 && reco != recognized) {
+        reco = strtok(line, SH_TOK_DELIM);
+        toreco = strtok(line, SH_TOK_DELIM);
+    }
+    if(reco != recognized)
+    {
+        return NULL;
+    }
+    free(voice_pwd);
+    chdir(current->pwd);
+    printf("searchLink - toreco : %s\n",toreco);
+    return toreco;
+}
+
+void Learn(char* transcript, int conf)
+{
+    if(conf > 0)
+    {
+        printf("Our algorithm managed to recognize your speech, however the confidence in his response is low \n");
+        printf("Are you satisfied by the response : %s ?\n   Y: Yes \n   N: No \n", transcript);
+        int rep = getchar();
+        while(rep != (int)'Y' && rep != (int)'N' && rep != (int)'y' && rep != (int)'n')
+        {
+            printf("Please enter a valid response \n");
+            rep = getchar();
+        }
+        char word[50];
+        if(rep == (int)'Y' || rep == (int)'y')
+        {
+            printf("Yes");
+        }
+        if(rep == (int)'N' || rep == (int)'n')
+        {
+            printf("Then, please enter what you wanted to say, be careful, your response is case sensitive and our algorithm will learn from it \n");
+            char c = getchar();
+            int i = 0;
+            char *text = calloc(1,1), buffer[50];
+            fgets(buffer, 50 , stdin);
+            printf("word :%s", buffer);
+            addLink(transcript, buffer);
+        }
+    }
+}

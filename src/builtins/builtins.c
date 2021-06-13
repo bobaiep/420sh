@@ -478,6 +478,7 @@ int sh_rm(char** args){
 
 int sh_start_voice(char** args){
     (void)args;
+
     Response* new = malloc(sizeof(Response));
 
     char **token;
@@ -489,26 +490,51 @@ int sh_start_voice(char** args){
 
     int confidence = strtol(new->confidence, (char**)NULL, 10);
 
-    if(confidence >= 50){
-        for(int i = 0; new->transcript[i]; i++){
-            new->transcript[i] = tolower(new->transcript[i]);
-        }
+    for(int i = 0; new->transcript[i]; i++){
+        new->transcript[i] = tolower(new->transcript[i]);
+    }
+
+    if(confidence > 80){
         printf("%s\n", new->transcript);
         add_to_hist(current->history,new->transcript);
-		token = sh_split_line(new->transcript);
-		sh_execute(&token);
-
-		free(new->transcript);
-        free(new->confidence);
-        free(new);
-		free(token);
-
-        return 1;
+        printf("Add to hist \n");
+        token = sh_split_line(new->transcript);
+        printf("SEARCH0\n");
+        char *linked = searchLink(new->transcript);
+        printf("SEARCH1\n");
+        printf("LINK RETURNS : %s\n", linked);
+        if(linked == NULL)
+        {
+            token = sh_split_line(new->transcript);      
+        }
+        else
+        {
+            token = sh_split_line(linked);
+        }
+        sh_execute(&token);
+        free(token);
     }
     else{
-        printf("Speech Recognition didn't succeed !\n");
-        return 1;
+        printf("SEARCH1\n");
+        char* res = searchLink(new->transcript);
+        printf("SEARCH2\n");
+        if(res != NULL)
+        {
+            add_to_hist(current->history,res);
+            token = sh_split_line(res);
+            sh_execute(&token);
+            free(token);
+        }
+        else{
+            Learn(new->transcript, atoi(new->confidence));
+        }
     }
+
+    free(new->transcript);
+    free(new->confidence);
+    free(new);
+    
+    return 1;
 }
 
 int sh_type(char** args){

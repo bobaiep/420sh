@@ -24,4 +24,12 @@ int record();
 
 void get_response(Response* new);
 
+void addLink(char* recognized, char* to_recognize);
+
+void addPhrase(char* phrase);
+
+char* searchLink(char* recognized);
+
+void Learn(char* transcript, int conf);
+
 #endif
