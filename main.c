@@ -25,6 +25,7 @@ int main(int argc, char** argv){
                 dup2(pipe_fds[1],STDOUT_FILENO);
                 close(pipe_fds[0]);
                 InitGUI(argc,argv);
+                close(pipe_fds[1]);
             } 
             else if (pid < 0) {
                 // Error forking
@@ -33,6 +34,7 @@ int main(int argc, char** argv){
             else {
                 close(pipe_fds[1]);
                 main_loop(pipe_fds[0]);
+                close(pipe_fds[0]);
             }
         }
     }
